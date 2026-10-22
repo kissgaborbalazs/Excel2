@@ -1,0 +1,6 @@
+{
+  "Name": "MPRT.Excel",
+  "ProjectType": "Library",
+  "Description": "ClosedXML alapú Excel funkciók gyűjteménye",
+  "MainFile": "NewActivity.xaml"
+}

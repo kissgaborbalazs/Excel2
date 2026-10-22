@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dokumentáció</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <style>
+    /* ═══════ RESET ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ═══════ DESIGN TOKENS ══════════════════════════════════ */
+    :root {
+      --bg:           #080d18;
+      --surface:      #0f1623;
+      --surface2:     #151e2e;
+      --surface3:     #1a2540;
+      --border:       #1e2d44;
+      --border-hi:    #2a3f60;
+      --text:         #dde6f5;
+      --text-dim:     #8ba0bf;
+      --text-muted:   #4a607d;
+      --accent:       #10b981;
+      --accent-hi:    #34d399;
+      --accent-glow:  rgba(16,185,129,.12);
+      --accent-glow2: rgba(16,185,129,.06);
+      --red:          #f87171;
+      --red-glow:     rgba(248,113,113,.1);
+      --blue:         #60a5fa;
+      --blue-glow:    rgba(96,165,250,.1);
+      --yellow:       #fbbf24;
+      --sidebar-w:    268px;
+      --f-head:       'Syne', sans-serif;
+      --f-body:       'Inter', sans-serif;
+      --f-mono:       'IBM Plex Mono', monospace;
+      --r:            8px;
+      --r-sm:         5px;
+      --ease:         cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; font-size: 15px; }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ═══════ LOADING ════════════════════════════════════════ */
+    #loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 16px;
+    }
+
+    .loader-ring {
+      width: 40px; height: 40px;
+      border: 2px solid var(--border-hi);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-text {
+      font-family: var(--f-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: .05em;
+    }
+
+    /* ═══════ APP LAYOUT ═════════════════════════════════════ */
+    #app { display: flex; min-height: 100vh; }
+
+    /* ═══════ SIDEBAR ════════════════════════════════════════ */
+    #sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebar::-webkit-scrollbar { width: 3px; }
+    #sidebar::-webkit-scrollbar-track { background: transparent; }
+    #sidebar::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+    .sb-header {
+      padding: 28px 20px 22px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+    }
+
+    .sb-lib-name {
+      font-family: var(--f-head);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .sb-lib-name .ns  { color: var(--text-dim); }
+    .sb-lib-name .nm  { color: var(--accent); }
+
+    .sb-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .sb-nav { padding: 12px 10px; flex: 1; }
+
+    .sb-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 14px 10px 6px;
+    }
+
+    .sb-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all .15s var(--ease);
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .sb-link:hover {
+      background: var(--accent-glow2);
+      color: var(--text);
+    }
+
+    .sb-link.active {
+      background: var(--accent-glow);
+      border-color: rgba(16,185,129,.2);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sb-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--border-hi);
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    .sb-link.active .sb-dot,
+    .sb-link:hover  .sb-dot { background: var(--accent); }
+
+    .sb-sub { padding-left: 24px; }
+
+    .sb-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+    }
+    .sb-footer a {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .sb-footer a:hover { color: var(--accent); }
+
+    .sb-count {
+      margin-left: auto;
+      font-size: 10px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 1px 7px;
+      color: var(--text-muted);
+      font-family: var(--f-mono);
+    }
+    .sb-link.active .sb-count { border-color: rgba(16,185,129,.3); color: var(--accent); background: var(--accent-glow); }
+
+    /* ═══════ MAIN ═══════════════════════════════════════════ */
+    #main { flex: 1; min-width: 0; }
+
+    /* ═══════ HERO ═══════════════════════════════════════════ */
+    .hero {
+      padding: 56px 64px 48px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 100%);
+    }
+
+    /* Grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+      opacity: .4;
+    }
+
+    /* Glow blob */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(16,185,129,.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-name {
+      font-family: var(--f-head);
+      font-size: 54px;
+      font-weight: 800;
+      letter-spacing: -3px;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .hero-name .ns { color: var(--text-dim); }
+    .hero-name .nm { color: var(--accent); }
+
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      max-width: 560px;
+    }
+
+    .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 13px;
+      border-radius: 100px;
+      font-size: 11.5px;
+      font-family: var(--f-mono);
+      border: 1px solid var(--border-hi);
+      color: var(--text-dim);
+      transition: all .15s;
+    }
+    .badge.accent {
+      border-color: rgba(16,185,129,.4);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* ═══════ SECTION ════════════════════════════════════════ */
+    .section {
+      padding: 48px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-family: var(--f-head);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::before {
+      content: '';
+      display: block;
+      width: 3px; height: 20px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ═══════ HIGHLIGHTS ═════════════════════════════════════ */
+    .hl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .hl-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px;
+      transition: border-color .2s, transform .2s;
+    }
+    .hl-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .hl-icon  { font-size: 22px; margin-bottom: 12px; }
+    .hl-title { font-family: var(--f-head); font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .hl-desc  { font-size: 12.5px; color: var(--text-dim); }
+
+    /* ═══════ TABLES ═════════════════════════════════════════ */
+    .dtable {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .dtable th {
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .dtable td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+      vertical-align: top;
+    }
+    .dtable tr:last-child td { border-bottom: none; }
+    .dtable tr:hover td { background: var(--surface2); }
+    .dtable code {
+      font-family: var(--f-mono);
+      font-size: 12px;
+      background: var(--surface3);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--accent);
+      border: 1px solid var(--border-hi);
+    }
+    .dtable td strong { color: var(--text); }
+    .dtable td.ok  { color: var(--accent); }
+    .dtable td.err { color: var(--red); }
+
+    /* ═══════ CODE BLOCKS ════════════════════════════════════ */
+    .cb-wrap {
+      border-radius: var(--r);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 14px 0;
+      position: relative;
+    }
+    .cb-head {
+      background: var(--surface2);
+      padding: 8px 14px;
+      font-size: 11px;
+      font-family: var(--f-mono);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+    .cb-copy {
+      margin-left: auto;
+      font-size: 10.5px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border-hi);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: var(--f-mono);
+      transition: all .15s;
+    }
+    .cb-copy:hover { border-color: var(--accent); color: var(--accent); }
+    .cb-copy.copied { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
+    .cb-wrap pre[class*="language-"] {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: #0d1117 !important;
+      padding: 18px 20px !important;
+    }
+    .cb-wrap code[class*="language-"] {
+      font-family: var(--f-mono) !important;
+      font-size: 12.5px !important;
+    }
+
+    /* ═══════ ARCHITECTURE ═══════════════════════════════════ */
+    .arch-diag {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      font-family: var(--f-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.9;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .arch-diag::-webkit-scrollbar { height: 3px; }
+    .arch-diag::-webkit-scrollbar-thumb { background: var(--border-hi); }
+
+    .flow-chain {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+    .flow-node {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 12px 18px;
+    }
+    .flow-node strong { font-family: var(--f-mono); font-size: 13px; color: var(--accent); font-weight: 500; }
+    .flow-node span   { font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px; }
+    .flow-arrow { display: flex; align-items: center; padding: 0 12px; color: var(--accent); font-size: 20px; }
+
+    /* ═══════ CALLOUT ════════════════════════════════════════ */
+    .callout {
+      background: var(--accent-glow);
+      border: 1px solid rgba(16,185,129,.25);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--r);
+      padding: 14px 18px;
+      font-size: 13.5px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+
+    /* ═══════ EXCEL MANAGER CODE EXAMPLES ═══════════════════ */
+    .em-example-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      font-family: var(--f-mono);
+    }
+
+    /* ═══════ ACTIVITIES ═════════════════════════════════════ */
+    .act-note {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--r);
+      padding: 12px 18px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      margin-bottom: 22px;
+    }
+    .act-note strong { color: var(--text); }
+
+    .act-search {
+      width: 100%;
+      padding: 10px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: var(--f-body);
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 18px;
+      transition: border-color .15s;
+    }
+    .act-search:focus { border-color: var(--accent); }
+    .act-search::placeholder { color: var(--text-muted); }
+
+    .group-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+
+    .gtab {
+      padding: 8px 18px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      transition: all .15s;
+      font-family: var(--f-body);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gtab:hover { border-color: var(--border-hi); color: var(--text); }
+    .gtab.active { background: var(--accent-glow); border-color: rgba(16,185,129,.4); color: var(--accent); }
+
+    .gtab-count {
+      font-size: 10px;
+      font-family: var(--f-mono);
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0 6px;
+      line-height: 18px;
+    }
+    .gtab.active .gtab-count { border-color: rgba(16,185,129,.3); color: var(--accent); background: var(--bg); }
+
+    .gpanel { display: none; }
+    .gpanel.active { display: block; }
+
+    /* Activity list column header */
+    .act-col-head {
+      display: grid;
+      grid-template-columns: 200px 1fr 160px;
+      gap: 16px;
+      padding: 6px 18px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .act-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 7px;
+      overflow: hidden;
+      transition: border-color .15s;
+    }
+    .act-row:hover { border-color: var(--border-hi); }
+
+    .act-body {
+      display: grid;
+      grid-template-columns: 200px 1fr 160px;
+      gap: 16px;
+      padding: 13px 18px;
+      align-items: start;
+    }
+
+    .act-name {
+      font-family: var(--f-mono);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      padding-top: 2px;
+    }
+
+    .act-inputs,
+    .act-outputs { display: flex; flex-direction: column; gap: 5px; }
+
+    .ptag {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 11px;
+      font-family: var(--f-mono);
+      padding: 3px 9px;
+      border-radius: var(--r-sm);
+      border: 1px solid;
+      width: fit-content;
+      max-width: 100%;
+      line-height: 1.4;
+    }
+    .ptag.req {
+      color: #fca5a5;
+      border-color: rgba(248,113,113,.25);
+      background: rgba(248,113,113,.06);
+    }
+    .ptag.opt {
+      color: var(--text-muted);
+      border-color: var(--border);
+      background: transparent;
+    }
+    .ptag .ptype { color: var(--blue); opacity: .85; }
+    .ptag .pdef  { color: var(--yellow); opacity: .7; font-size: 10px; }
+    .ptag .req-star { color: var(--red); font-size: 10px; }
+
+    .otag {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 5px;
+      font-size: 11px;
+      font-family: var(--f-mono);
+      padding: 3px 9px;
+      border-radius: var(--r-sm);
+      background: rgba(96,165,250,.08);
+      border: 1px solid rgba(96,165,250,.22);
+      color: var(--blue);
+      width: fit-content;
+    }
+    .otag .otype { opacity: .7; }
+
+    .act-notes {
+      border-top: 1px solid var(--border);
+      padding: 8px 18px 10px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+    .act-notes::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+
+    .act-none { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+    /* ═══════ DESIGN PRINCIPLES ══════════════════════════════ */
+    .dp-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px 26px;
+      margin-bottom: 14px;
+    }
+    .dp-title { font-family: var(--f-head); font-weight: 700; font-size: 15px; color: var(--accent); margin-bottom: 10px; }
+    .dp-content { font-size: 13.5px; color: var(--text-dim); }
+
+    /* ═══════ FOOTER ═════════════════════════════════════════ */
+    .doc-footer {
+      padding: 30px 64px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--f-mono);
+      letter-spacing: .03em;
+    }
+    .doc-footer a { color: var(--accent); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    /* ═══════ ANIMATIONS ═════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .4s var(--ease) forwards; }
+    .d1 { animation-delay: .05s; opacity: 0; }
+    .d2 { animation-delay: .10s; opacity: 0; }
+    .d3 { animation-delay: .15s; opacity: 0; }
+    .d4 { animation-delay: .20s; opacity: 0; }
+
+    /* ═══════ UTILS ══════════════════════════════════════════ */
+    .hidden { display: none !important; }
+    .mt16   { margin-top: 16px; }
+    .mt24   { margin-top: 24px; }
+    .label-sm {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <div class="loader-ring"></div>
+  <div class="loader-text">docs.js betöltése…</div>
+</div>
+
+<!-- Main app (hidden until data loaded) -->
+<div id="app" class="hidden">
+  <aside id="sidebar"></aside>
+  <main  id="main"></main>
+</div>
+
+<!-- Prism syntax highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+
+<!-- Dokumentációs adatok — cseréld ki ezt a fájlt másik library-hez -->
+<script src="Docs\docs.js"></script>
+
+<script>
+'use strict';
+/* ═══════════════════════════════════════════════════════════════
+   BOOT  —  docs.js-ből tölti a DOCS_DATA globális változót
+   (file:// és http:// protokollon egyaránt működik)
+═══════════════════════════════════════════════════════════════ */
+function init() {
+  if (typeof DOCS_DATA === 'undefined') {
+    document.getElementById('loading').innerHTML =
+      `<div style="text-align:center;font-family:var(--f-mono)">
+        <div style="font-size:28px;margin-bottom:12px">⚠️</div>
+        <div style="color:var(--red);font-size:14px">A docs.js nem töltődött be.</div>
+        <div style="color:var(--text-muted);font-size:12px;margin-top:8px">
+          Győződj meg róla, hogy a <code>docs.js</code> az <code>index.html</code> mellé van másolva.
+        </div>
+      </div>`;
+    return;
+  }
+  renderAll(DOCS_DATA);
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  setTimeout(() => { Prism.highlightAll(); setupScrollSpy(); }, 80);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER ALL
+═══════════════════════════════════════════════════════════════ */
+function renderAll(d) {
+  document.title = `${d.meta.name} — Dokumentáció`;
+  document.getElementById('sidebar').innerHTML = buildSidebar(d);
+  document.getElementById('main').innerHTML    = buildMain(d);
+  setupTabs();
+  setupSearch();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
+function buildSidebar(d) {
+  const nameParts = d.meta.name.split('.');
+  const ns = nameParts.slice(0, -1).join('.') + '.';
+  const nm = nameParts[nameParts.length - 1];
+
+  const navItems = [
+    { href: '#hero',         label: 'Áttekintés' },
+    { href: '#prerequisites', label: 'Előfeltételek' },
+    { href: '#nuget',         label: 'NuGet függőségek' },
+    { href: '#architecture',  label: 'Architektúra' },
+    { href: '#excelmgr',      label: 'ExcelManager' },
+    { href: '#activities',    label: 'Activity referencia',
+      children: d.activityGroups.map(g => ({
+        href: `#group-${g.id}`,
+        label: `${g.title}`,
+        count: g.activities.length
+      }))
+    },
+    { href: '#design', label: 'Tervezési elvek' },
+  ];
+
+  return `
+    <div class="sb-header">
+      <div class="sb-lib-name"><span class="ns">${e(ns)}</span><span class="nm">${e(nm)}</span></div>
+      <div class="sb-tagline">${e(d.meta.tagline)}</div>
+    </div>
+    <nav class="sb-nav">
+      ${navItems.map(it => sbLink(it)).join('')}
+    </nav>
+    <div class="sb-footer">
+      Engine: <a href="${e(d.meta.engineUrl)}" target="_blank" rel="noopener">${e(d.meta.engine)} ↗</a>
+    </div>`;
+}
+
+function sbLink(it) {
+  let h = `<a class="sb-link" href="${it.href}">
+    <span class="sb-dot"></span>${e(it.label)}
+    ${it.count !== undefined ? `<span class="sb-count">${it.count}</span>` : ''}
+  </a>`;
+  if (it.children) {
+    h += `<div class="sb-sub">${it.children.map(c =>
+      `<a class="sb-link" href="${c.href}"><span class="sb-dot"></span>${e(c.label)}
+       <span class="sb-count">${c.count}</span></a>`
+    ).join('')}</div>`;
+  }
+  return h;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════════════════════════ */
+function buildMain(d) {
+  return [
+    buildHero(d.meta),
+    buildHighlights(d.highlights),
+    buildPrerequisites(d.prerequisites),
+    buildNuget(d.nuget),
+    buildArchitecture(d.architecture),
+    buildExcelManager(d.excelManager),
+    buildActivities(d.activityGroups, d.commonInputs),
+    buildDesignPrinciples(d.designPrinciples),
+    buildFooter(d.meta),
+  ].join('');
+}
+
+/* ─── Hero ─────────────────────────────────────────────────── */
+function buildHero(m) {
+  const parts = m.name.split('.');
+  const ns = parts.slice(0, -1).join('.') + '.';
+  const nm = parts[parts.length - 1];
+  return `
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-name fade-up">
+        <span class="ns">${e(ns)}</span><span class="nm">${e(nm)}</span>
+      </div>
+      <div class="hero-tagline fade-up d1">${e(m.tagline)}</div>
+      <div class="hero-badges fade-up d2">
+        <span class="badge accent">${e(m.engine)}</span>
+        <span class="badge">Office-mentes</span>
+        <span class="badge">UiPath Custom Activity</span>
+        <span class="badge">.NET 4.6.1+ / .NET 6+</span>
+        <span class="badge">v${e(m.version)}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ─── Highlights ───────────────────────────────────────────── */
+function buildHighlights(items) {
+  return `
+  <div class="section">
+    <div class="hl-grid">
+      ${items.map((h, i) => `
+        <div class="hl-card fade-up d${Math.min(i+1,4)}">
+          <div class="hl-icon">${h.icon}</div>
+          <div class="hl-title">${e(h.title)}</div>
+          <div class="hl-desc">${e(h.description)}</div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ─── Prerequisites ────────────────────────────────────────── */
+function buildPrerequisites(rows) {
+  return `
+  <div class="section" id="prerequisites">
+    <div class="section-title">Előfeltételek</div>
+    <table class="dtable">
+      <thead><tr><th>Követelmény</th><th>Részletek</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `<tr><td><strong>${e(r.requirement)}</strong></td><td>${e(r.details)}</td></tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+/* ─── NuGet ────────────────────────────────────────────────── */
+function buildNuget(rows) {
+  return `
+  <div class="section" id="nuget">
+    <div class="section-title">NuGet függőségek</div>
+    <table class="dtable">
+      <thead><tr><th>Csomag</th><th>Verzió</th><th>Szerepe</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td><code>${e(r.package)}</code></td>
+            <td style="font-family:var(--f-mono);font-size:12px;color:var(--yellow)">${e(r.version)}</td>
+            <td>${e(r.role)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+/* ─── Architecture ─────────────────────────────────────────── */
+function buildArchitecture(arch) {
+  const flowHtml = arch.flow.map(f =>
+    `<div class="flow-node"><strong>${e(f.step)}</strong><span>${e(f.desc)}</span></div>
+     ${f.arrow ? `<div class="flow-arrow">${f.arrow}</div>` : ''}`
+  ).join('');
+
+  const layerRows = arch.layers.map(l => `
+    <tr>
+      <td><code>${e(l.layer)}</code></td>
+      <td class="ok">${e(l.allowed)}</td>
+      <td class="err">${e(l.forbidden)}</td>
+    </tr>`).join('');
+
+  return `
+  <div class="section" id="architecture">
+    <div class="section-title">Architektúra áttekintés</div>
+    <div class="arch-diag">${e(arch.diagram.join('\n'))}</div>
+
+    <div class="mt24">
+      <div class="label-sm">Felelősségi lánc</div>
+      <div class="flow-chain">${flowHtml}</div>
+    </div>
+
+    <div class="mt16">
+      <div class="label-sm">Réteg szabályok</div>
+      <table class="dtable">
+        <thead><tr><th>Réteg</th><th>✓ Megengedett</th><th>✗ Tilos</th></tr></thead>
+        <tbody>${layerRows}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+/* ─── ExcelManager ─────────────────────────────────────────── */
+function buildExcelManager(em) {
+  const errRows = em.constructorErrors.map(r =>
+    `<tr><td>${e(r.condition)}</td><td><code>${e(r.exception)}</code></td></tr>`
+  ).join('');
+
+  const examples = em.codeExamples.map(ex => `
+    <div class="mt16">
+      <div class="em-example-title">${e(ex.title)}</div>
+      ${codeBlock(ex.code.join('\n'), ex.lang)}
+    </div>`).join('');
+
+  return `
+  <div class="section" id="excelmgr">
+    <div class="section-title">ExcelManager — Használati útmutató</div>
+    <div class="callout">${e(em.description)}</div>
+
+    <div class="label-sm">Konstruktor által dobott kivételek</div>
+    <table class="dtable">
+      <thead><tr><th>Feltétel</th><th>Kivétel</th></tr></thead>
+      <tbody>${errRows}</tbody>
+    </table>
+
+    <div class="mt24 label-sm">Kód példák</div>
+    ${examples}
+  </div>`;
+}
+
+/* ─── Activities ───────────────────────────────────────────── */
+function buildActivities(groups, commonInputs) {
+  const commonTags = commonInputs.map(p => `
+    <span class="ptag req" title="${e(p.description)}">
+      <span class="req-star">*</span>${e(p.name)} <span class="ptype">${e(p.type)}</span>
+    </span>`).join('');
+
+  const tabs = groups.map(g =>
+    `<button class="gtab" data-gid="${g.id}">
+       ${e(g.title)} <span style="opacity:.6;font-weight:400;font-size:11px">${e(g.titleEn)}</span>
+       <span class="gtab-count">${g.activities.length}</span>
+     </button>`
+  ).join('');
+
+  const panels = groups.map(g => `
+    <div class="gpanel" id="group-${g.id}" data-gid="${g.id}">
+      <div class="act-col-head">
+        <span>Activity neve</span>
+        <span>Bemeneti tulajdonságok</span>
+        <span>Kimenet</span>
+      </div>
+      ${g.activities.map(a => activityRow(a)).join('')}
+    </div>`
+  ).join('');
+
+  return `
+  <div class="section" id="activities">
+    <div class="section-title">Activity referencia</div>
+    <div class="act-note">
+      <strong>Közös bemenetek minden activity-n:</strong>
+      ${commonTags}
+    </div>
+    <input type="search" class="act-search" id="actSearch" placeholder="⌕  Keresés activity neve alapján…">
+    <div class="group-tabs">${tabs}</div>
+    <div id="actPanels">${panels}</div>
+  </div>`;
+}
+
+function activityRow(a) {
+  const inputs = a.inputs.length
+    ? a.inputs.map(inp => `
+        <span class="ptag ${inp.required ? 'req' : 'opt'}" title="${e(inp.description || '')}">
+          ${inp.required ? '<span class="req-star">*</span>' : ''}${e(inp.name)}
+          ${inp.type   ? `<span class="ptype">${inp.type}</span>`  : ''}
+          ${inp.default ? `<span class="pdef">= ${e(inp.default)}</span>` : ''}
+        </span>`).join('')
+    : '<span class="act-none">—</span>';
+
+  const outputs = a.outputs.length
+    ? a.outputs.map(o => `<span class="otag">${e(o.name)} <span class="otype">${o.type}</span></span>`).join('')
+    : '<span class="act-none">—</span>';
+
+  const notesHtml = a.notes
+    ? `<div class="act-notes">${e(a.notes)}</div>`
+    : '';
+
+  return `
+    <div class="act-row" data-name="${a.displayName.toLowerCase()}">
+      <div class="act-body">
+        <div class="act-name">${e(a.displayName)}</div>
+        <div class="act-inputs">${inputs}</div>
+        <div class="act-outputs">${outputs}</div>
+      </div>
+      ${notesHtml}
+    </div>`;
+}
+
+/* ─── Design Principles ────────────────────────────────────── */
+function buildDesignPrinciples(principles) {
+  return `
+  <div class="section" id="design">
+    <div class="section-title">Tervezési elvek</div>
+    ${principles.map(p => `
+      <div class="dp-card">
+        <div class="dp-title">${e(p.title)}</div>
+        <div class="dp-content">${e(p.content)}</div>
+        ${p.code ? codeBlock(p.code.lines.join('\n'), p.code.lang) : ''}
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ─── Footer ───────────────────────────────────────────────── */
+function buildFooter(m) {
+  return `
+  <div class="doc-footer">
+    ${e(m.name)} —
+    <a href="${e(m.engineUrl)}" target="_blank" rel="noopener">${e(m.engine)}</a>
+    alapokon · Office nem szükséges
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════ */
+/* Escape HTML — prevents XSS from JSON data */
+function e(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&(?!(?:amp|lt|gt|quot|#\d+|#x[\da-f]+);)/gi, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* Unescape HTML entities for display (used for pre-escaped HTML in JSON like &lt;) */
+function unescapeHtmlInTag(s) {
+  return String(s || '')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+}
+
+function codeBlock(code, lang) {
+  const safe = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const id   = 'cb_' + Math.random().toString(36).slice(2);
+  return `
+  <div class="cb-wrap">
+    <div class="cb-head">
+      <span class="cb-dot"></span>
+      <span>${lang}</span>
+      <button class="cb-copy" id="${id}" onclick="copyCode('${id}', ${JSON.stringify(code)})">kopíroz</button>
+    </div>
+    <pre><code class="language-${lang === 'text' ? 'markup' : lang}">${safe}</code></pre>
+  </div>`;
+}
+
+function copyCode(btnId, text) {
+  navigator.clipboard?.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.textContent = '✓ másolva';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'kopíroz'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INTERACTIONS
+═══════════════════════════════════════════════════════════════ */
+function setupTabs() {
+  const tabs   = document.querySelectorAll('.gtab');
+  const panels = document.querySelectorAll('.gpanel');
+
+  if (!tabs.length) return;
+  tabs[0].classList.add('active');
+  panels[0].classList.add('active');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const gid = tab.dataset.gid;
+      document.querySelector(`.gpanel[data-gid="${gid}"]`)?.classList.add('active');
+      history.replaceState(null, '', `#group-${gid}`);
+    });
+  });
+
+  // Honour hash on load
+  const hash = location.hash;
+  if (hash.startsWith('#group-')) {
+    const gid = hash.slice(7);
+    document.querySelector(`.gtab[data-gid="${gid}"]`)?.click();
+  }
+}
+
+function setupSearch() {
+  const input = document.getElementById('actSearch');
+  if (!input) return;
+
+  let lastActive = null;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    const rows = document.querySelectorAll('.act-row');
+    const tabs   = document.querySelectorAll('.gtab');
+    const panels = document.querySelectorAll('.gpanel');
+
+    if (q) {
+      // Save currently active tab
+      if (!lastActive) lastActive = document.querySelector('.gtab.active')?.dataset.gid;
+      // Show all panels
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.add('active'));
+      // Filter rows
+      rows.forEach(row => {
+        row.style.display = row.dataset.name.includes(q) ? '' : 'none';
+      });
+    } else {
+      // Restore
+      rows.forEach(row => row.style.display = '');
+      panels.forEach(p => p.classList.remove('active'));
+      tabs.forEach(t => t.classList.remove('active'));
+      const restoreId = lastActive || document.querySelector('.gtab')?.dataset.gid;
+      if (restoreId) {
+        document.querySelector(`.gtab[data-gid="${restoreId}"]`)?.classList.add('active');
+        document.querySelector(`.gpanel[data-gid="${restoreId}"]`)?.classList.add('active');
+      }
+      lastActive = null;
+    }
+  });
+}
+
+function setupScrollSpy() {
+  const links   = document.querySelectorAll('.sb-link[href^="#"]');
+  const targets = [...links]
+    .map(l => document.querySelector(l.getAttribute('href')))
+    .filter(Boolean);
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.sb-link[href="#${entry.target.id}"]`);
+        link?.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  targets.forEach(t => obs.observe(t));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   START
+═══════════════════════════════════════════════════════════════ */
+init();
+</script>
+</body>
+</html>

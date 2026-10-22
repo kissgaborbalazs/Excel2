@@ -1,0 +1,256 @@
+{
+  "name": "MPRT.Excel",
+  "projectId": "20b112dd-702e-4221-9832-43346124988c",
+  "description": "ClosedXML alapú Excel funkciók gyűjteménye",
+  "main": "NewActivity.xaml",
+  "dependencies": {
+    "ClosedXML": "0.105.0",
+    "UiPath.CodedWorkflows": "24.10.2",
+    "UiPath.Testing.Activities": "25.10.2"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "24.10.9.0",
+  "projectVersion": "25.1.1",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Library",
+    "libraryOptions": {
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "5a08e3fc-9a76-44a9-b269-3368234dbc0f",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\ExcelManager\\ExcelManager_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "64123b83-00b0-4053-b297-9c737a928c39",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\RangeExtensions\\RangeExtension.Clear_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "cd125d32-d2a3-44c9-a199-52837a98b103",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\RangeExtensions\\RangeExtension.SetStyle_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "a169b82e-5e66-492f-9498-347936ab947b",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\RangeExtensions\\RangeExtension.SortRange_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "a477e897-96e9-4f9c-81c3-63c10c33cfab",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorkbookExtensions\\WorkbookExtension.GetSheetNames_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "4f03ed35-47a9-4e69-a395-e084e1a9b930",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorkbookExtensions\\WorkbookExtension.SheetExists_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "dcf4c9f3-5b30-4de5-b584-cc206d9158ef",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.AppendDataTable_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "08ede825-240a-43cd-9d87-07f9963a2f79",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.AutoFitColumns_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "5481aa9f-d6ab-44d9-895a-28629d1df626",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.Clear_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "7cfa8ca7-e19e-443a-bb06-fad031e73d80",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.Copy_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "feed6dab-2b64-4623-93a8-ce7b099ee390",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.Delete_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "ad4901a5-896c-46c3-9c84-d5d793488805",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.FindCell_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "dab092c7-8502-4555-9f39-857c5f17adfb",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.FreezePanes_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "f3726774-d6ba-4a6c-863d-69dcf54350f1",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.GetLastColumn_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "ee429fbe-0299-4f70-9a5c-75a887d9f469",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.GetLastRow_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "7f42ec28-65d2-41ad-ac44-17813944fd2e",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.HideColumn_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "23524fad-a084-41a4-ba78-9103e9d087ae",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.HideRow_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "3c2b0d6c-88ad-4e48-935a-3f6ad597493f",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.MoveColumn_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "453eec5f-bedc-4d2a-b9cc-b2a4df6a64b4",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.MoveRow_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "cdbab44f-8c05-424f-8cdf-6f80d6d15a53",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.MoveToFirst_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "3478cf62-7e2a-4b2f-b5ff-43cb351232f4",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.MoveToLast_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "7ed9f907-6449-4969-8c05-acec18eb1bc1",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.ReadFormula.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "b2b4b025-066a-4077-9a00-ae816c636ebd",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.ReadRange_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "cfa7cca3-0efa-471a-a7da-3ae9de8a8b47",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.Rename_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "ed833e4f-0344-44ab-ab23-759a6c790d05",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.SetFormula_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "8a01e4c3-41ec-4735-bb60-47257506dc41",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.SetPosition_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "41642a0d-a8d1-4dbf-ba95-da8d3e390e63",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.UnhideColumn_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "5b3fddfc-11b6-4414-bf9d-52b21e9a041c",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.UnhideRow_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "6a521e97-b508-4865-a1fc-15d009da4022",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.WriteDataTable_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "a3f850ed-9130-42b9-bb35-06de7d13e78b",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\WorksheetExtensions\\WorksheetExtension.GetRange_Test.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "6c61bb51-f753-41ef-98df-6cf1fc455f5d",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Activities\\Activity.AutoFitColumns_Test.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "26310a2c-4858-4092-9ccb-4dbd67f0ab06",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Activities\\Artivity.FreezePanes_Test.cs"
+      },
+      {
+        "editingStatus": "InProgress",
+        "testCaseId": "217c9f98-8a4e-4157-8d11-d6928910680e",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Extensions\\RangeExtensions\\RangeExtension.SetNumberFormat.cs"
+      },
+      {
+        "editingStatus": "Publishable",
+        "testCaseId": "bd04891e-af8b-4582-9a66-238bb354e118",
+        "testCaseType": "TestCase",
+        "fileName": "Test\\Activities\\Activity.SetNumberFormat_Test.cs"
+      }
+    ],
+    "saveToCloud": false
+  },
+  "expressionLanguage": "CSharp",
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
+}
